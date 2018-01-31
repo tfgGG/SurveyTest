@@ -9,41 +9,74 @@
 
 <link rel="stylesheet" href="~/Content/bootstrap.css" />
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script>
+<script runat="server">
+$(function(){
+	
+	var timeoutId;
+	$('form input, form textarea, form select').on('input propertychange change', function() {
+		
+			console.log('Textarea Change');    
+			clearTimeout(timeoutId);
+			timeoutId = setTimeout(function() {    
+				saveToDB();
+			}, 1500);
+	});
 
+	function saveToDB()
+	{
+		var formdata = new FormData($("form")[0]);
+		formdata.append("a","test");
 
+		$.ajax({
+			url: '/AutoSave/SaveDB',
+			type: "POST",
+			data: formdata,
+			processData: false,
+			contentType: false,
+			beforeSend: function(xhr) {
+				$('#info').html('Saving...');
+			},
+			success: function(data) {
+				var d = new Date();
+				$('#info').html('Saved! Last: ' + d.toLocaleTimeString()+ data);
+			},
+		});
+	}
 
-
+});
 
 </script>
+
 
 <div class="container">
     <div class="row">
         @*@using (Html.BeginForm("", "", FormMethod.Post))*@
 
+		<span id="info"></span>
+		<form method="post" enctype="multipart/form-data" runat="server" action="/AutoSave/SaveDB">
 
-		<form>
-			<input  class="form-control" type="text" name="txtinput1"><br>
-			<input  class="form-control" type="text" name="txtinput2"><br>
+			<input  class="form-control" type="text" name="txtinput1" runat="server"><br>
+			<input  class="form-control" type="text" name="txtinput2" runat="server"><br>
+
 			<label class="radio-inline">
-				<input type="radio" name="optradio">Option 1
+				<input type="radio" name="optradio" value="1" checked>Option 1
 			</label>
 			<label class="radio-inline">
-				<input type="radio" name="optradio">Option 2
+				<input type="radio" name="optradio" value="2">Option 2
 			</label>
 			<label class="radio-inline">
-				<input type="radio" name="optradio">Option 3
+				<input type="radio" name="optradio" value="3">Option 3
 			</label>
 
 			<div class="form-check">
 				<label class="form-check-label">
-				<input type="checkbox" class="form-check-input">
+				<input type="checkbox" class="form-check-input" name="check">
 				Check me out
 				</label>
 			</div>
 
 			<div class='form-group'>
-			<select class="form-control">
+			<select class="form-control" id="drop1" name="drop1" runat="server">
 				<option value="">請選擇</option>
 				<option value="1">自主行動-系統思考與解決問題</option>
 				<option value="2">規劃執行與創新應變</option>
@@ -55,7 +88,7 @@
 				<option value="8">多元文化與國際理解</option>
 				<option value="9">身心素質與自我精進</option>
 			</select>
-			<select class="form-control">
+			<select class="form-control" id="drop2" name="drop2"  runat="server">
 				<option value="">請選擇</option>
 				<option value="1">自主行動-系統思考與解決問題</option>
 				<option value="2">規劃執行與創新應變</option>
@@ -70,26 +103,29 @@
 			</div>
 
 			<div class="form-group">
-				<textarea class="form-control" rows="5" ></textarea>
+				<textarea class="form-control" rows="5" name="area1"></textarea>
 				<div class="fileupload fileupload-new" data-provides="fileupload">
 					<span class="btn btn-primary btn-file"><span class="fileupload-new">檔案上傳</span>
 					<span class="fileupload-exists">更改檔案</span>         
-					<input type="file" /></span>
+					<input type="file" name="file1" id="file1"/></span>
 					<span class="fileupload-preview"></span>
 					<a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
 				</div>
 			</div>
 
-						<div class="form-group">
-				<textarea class="form-control" rows="5" ></textarea>
+			<div class="form-group">
+				<textarea class="form-control" rows="5" name="area2" ></textarea>
 				<div class="fileupload fileupload-new" data-provides="fileupload">
 					<span class="btn btn-primary btn-file"><span class="fileupload-new">檔案上傳</span>
 					<span class="fileupload-exists">更改檔案</span>         
-					<input type="file" /></span>
+					<input type="file" name="file2" id="file2"/></span>
 					<span class="fileupload-preview"></span>
 					<a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
 				</div>
 			</div>
+
+			<input type="submit" text="submit"/>
+
 		</form>
     </div>
 </div>
