@@ -12,6 +12,11 @@ namespace SurveyTest2.Controllers
         // GET: InputTest
         public ActionResult InputTest()
         {
+            ViewBag.input1 = "David";
+            ViewBag.input2 = "Tom";
+            ViewBag.drop1 = "3";
+            ViewBag.radio = "3";
+            ViewBag.area1 = "";
             return View();
         }
 
@@ -29,7 +34,7 @@ namespace SurveyTest2.Controllers
                 ans.Add("drop1: "+ Request.Form["drop1"]);
                 ans.Add("drop2: " + Request.Form["drop2"]);
 
-                ans.Add("area1: " + Request.Form["area1"]);
+                ans.Add("area1: " + Request.Form["area1"].ToString());
                 ans.Add("area2: " + Request.Form["area2"]);
 
             }
