@@ -24,7 +24,7 @@ $(function(){
 	var timeoutId;
 	$('form input, form textarea, form select').on('input propertychange change', function() {
 		
-			console.log('Textarea Change');    
+			console.log('form Change');    
 			clearTimeout(timeoutId);
 			timeoutId = setTimeout(function() {    
 				saveToDB();
@@ -132,8 +132,6 @@ $(function(){
 					<a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
 				</div>
 			</div>
-
-			<input type="submit" text="submit"/>
 
 		</form>
     </div>
